@@ -1,0 +1,32 @@
+# JPA (JpaBaseConfiguration, HibernateJpaAutoConfiguration)
+app:
+  secret: SECRET
+application:
+  security:
+    jwt:
+      secret-key: McQfTjWnZr4t7w!z%C*F-JaNdRgUkXp2
+      expiration: 60000 # 1 day
+      refresh-token:
+        expiration: 604800000 # 7 days
+
+spring:
+  mvc:
+    dispatch-options-request: true
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: validate
+    database: default
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+  datasource:
+    url: jdbc:h2:./data/demo
+    driverClassName: org.h2.Driver
+
+  # H2 Configuration
+# spring.datasource.url=jdbc:h2:mem:testdb
+    username: sa
+    password: password
+
+
+
