@@ -10,8 +10,6 @@ application:
         expiration: 604800000 # 7 days
 
 spring:
-  mvc:
-    dispatch-options-request: true
   jpa:
     generate-ddl: true
     hibernate:
