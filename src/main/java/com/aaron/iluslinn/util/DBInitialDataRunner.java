@@ -34,11 +34,6 @@ public class DBInitialDataRunner implements CommandLineRunner {
         createInitialUsers();
         addCitiesToDB();
         log.info("Loading users and cities to DB completed");
-
-
-
-
-
     }
 
     private void addCitiesToDB() {
