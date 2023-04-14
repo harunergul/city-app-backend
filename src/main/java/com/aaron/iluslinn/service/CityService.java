@@ -1,6 +1,8 @@
 package com.aaron.iluslinn.service;
 
 import com.aaron.iluslinn.dto.CityDTO;
+import com.aaron.iluslinn.exception.ApiRequestException;
+import com.aaron.iluslinn.exception.enums.ApiExceptionCity;
 import com.aaron.iluslinn.model.City;
 import com.aaron.iluslinn.repository.CityRepository;
 
@@ -31,6 +33,9 @@ public class CityService {
     }
 
     public City updateCity(City city) {
+        if(city.getId()==null){
+            throw new ApiRequestException(ApiExceptionCity.INVALID_FIELDS);
+        }
         return cityRepository.save(city);
     }
 }

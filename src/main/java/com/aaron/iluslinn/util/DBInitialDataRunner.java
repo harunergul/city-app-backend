@@ -92,6 +92,11 @@ public class DBInitialDataRunner implements CommandLineRunner {
         normalUser.setPassword(passwordEncoder.encode("harun"));
         userRepository.save(normalUser);
 
+        userRole = new Role();
+        userRole.setRole("ROLE_ALLOW_CREATE");
+        userRole.setUser(normalUser);
+        roleRepository.save(userRole);
+
 
     }
 }
