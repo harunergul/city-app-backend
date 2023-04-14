@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,8 @@ public class DBInitialDataRunner implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -66,7 +69,8 @@ public class DBInitialDataRunner implements CommandLineRunner {
         user.setFirstName("admin");
         user.setLastName("admin");
         user.setEnabled(true);
-        user.setPassword("admin");
+
+        user.setPassword(passwordEncoder.encode("admin"));
 
         user = userRepository.save(user);
         Role userRole = new Role();
@@ -85,7 +89,7 @@ public class DBInitialDataRunner implements CommandLineRunner {
         normalUser.setFirstName("harun");
         normalUser.setLastName("ergul");
         normalUser.setEnabled(true);
-        normalUser.setPassword("harun");
+        normalUser.setPassword(passwordEncoder.encode("harun"));
         userRepository.save(normalUser);
 
 

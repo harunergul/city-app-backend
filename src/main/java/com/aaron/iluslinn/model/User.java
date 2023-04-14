@@ -29,13 +29,6 @@ public class User extends AbstractUser implements UserDetails {
 	public User() {
 		super(null, null);
 	}
-
-	public User(String username, String password, ArrayList<Role> roles) {
-		super(username, roles);
-		this.password = password;
-
-	}
-
 	@Override
 	public String getPassword() {
 		return password;
@@ -63,10 +56,6 @@ public class User extends AbstractUser implements UserDetails {
 	@Override
 	public List<Role> getAuthorities() {
 		return this.roles;
-	}
-
-	public List<Role> getRoles() {
-		return roles;
 	}
 
 

@@ -19,7 +19,7 @@ public class ApplicationConfig {
     private final ApplicationUserDetailService userDetailService;
 
     @Bean
-    public AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder){
+    public AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailService);
         authProvider.setPasswordEncoder(passwordEncoder);
@@ -27,20 +27,17 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder)
+    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder bCryptPasswordEncoder)
         throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-            .userDetailsService(userDetailService)
-            .passwordEncoder(bCryptPasswordEncoder)
-            .and()
-            .build();
+        return http.getSharedObject(AuthenticationManagerBuilder.class).userDetailsService(userDetailService)
+            .passwordEncoder(bCryptPasswordEncoder).and().build();
     }
-
-
 
 
 }

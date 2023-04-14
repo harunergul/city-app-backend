@@ -1,23 +1,28 @@
 package com.aaron.iluslinn.auth;
 
-import com.aaron.iluslinn.model.PartialUser;
+import com.aaron.iluslinn.model.TokenDetail;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
-import java.security.Key;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import lombok.Setter;
+
 @Service
+@Setter
 public class JwtUtil {
 
     @Value("${application.security.jwt.secret-key}")
@@ -50,15 +55,10 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(TokenDetail tokenDetail) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername(), jwtExpiration);
-    }
-
-    public String generateToken(PartialUser partialUser) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("user", partialUser);
-        return createToken(claims, partialUser.getUsername(), jwtExpiration);
+        claims.put("roles", tokenDetail.roles());
+        return createToken(claims, tokenDetail.username(), jwtExpiration);
     }
 
     private String createToken(Map<String, Object> claims, String subject, long expiration) {
@@ -87,6 +87,7 @@ public class JwtUtil {
             .signWith(getSignInKey(), SignatureAlgorithm.HS256)
             .compact();
     }
+
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
@@ -95,5 +96,19 @@ public class JwtUtil {
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public static void main(String[] args) {
+        byte[] keyBytes = Decoders.BASE64.decode("EWjaPHyEaaS2Y191LdJE18FoU6jAmwks");
+        JwtUtil util = new JwtUtil();
+        util.setSecretKey("M5P7Q8RATBUCWEXFYH2J3K4N6P7Q9SATBVDWEXGZH2J4M5N6Q8R9SBUCVD");
+        util.setJwtExpiration(100000);
+        util.setRefreshExpiration(55454545);
+        Set<String> roles = new HashSet<>();
+        roles.add("CREATE");
+        roles.add("EDIT");
+        roles.add("DELETE");
+        TokenDetail tokenDetail = new TokenDetail("user", roles);
+        util.generateToken(tokenDetail);
     }
 }

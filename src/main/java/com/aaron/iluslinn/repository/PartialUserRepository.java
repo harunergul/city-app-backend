@@ -10,7 +10,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface PartialUserRepository extends CrudRepository<PartialUser, Long>, JpaSpecificationExecutor<PartialUser>{
 
-	@Query(value = "SELECT * FROM user where username = ?1 AND is_Exist =TRUE ", nativeQuery = true)
 	Optional<PartialUser> findUserByUsername(String username);
 
 }
