@@ -29,14 +29,14 @@ public class CityController implements CityApi {
     private final CityDTOMapper cityDTOMapper;
 
 
-    public ResponseEntity<CityListRsp> getAllCities(Integer page, Integer pageSize, String name) {
-        page = page - 1;
+    public ResponseEntity<CityListRsp> getAllCities(Integer page, Integer pageSize, String filter) {
+
         Pageable pageable = PageRequest.of(page, pageSize);
-        Page<City> pagedResult = this.cityService.getCities(pageable, name);
+        Page<City> pagedResult = this.cityService.getCities(pageable, filter);
         List result = pagedResult.getContent().stream().map(cityDTOMapper).collect(Collectors.toList());
         int totalPages = pagedResult.getTotalPages();
         long totalElements = pagedResult.getTotalElements();
-        PageVo pageVo = new PageVo(totalElements, totalPages, page + 1);
+        PageVo pageVo = new PageVo(totalElements, totalPages, page );
         CityListRsp response = CityListRsp.builder().data(result).pageInfo(pageVo).build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
