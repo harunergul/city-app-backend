@@ -20,16 +20,20 @@ import jakarta.persistence.criteria.Root;
 
 @Repository
 @RequiredArgsConstructor
-public class CityCustomRepositoryImpl implements CityCustomRepository{
+public class CityCustomRepositoryImpl implements CityCustomRepository {
 
     private final EntityManager entityManager;
+
     @Override
     public Page<City> findAll(Specification<City> specification, Pageable pageable) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<City> criteriaQuery = criteriaBuilder.createQuery(City.class);
         Root<City> root = criteriaQuery.from(City.class);
         Predicate predicate = specification.toPredicate(root, criteriaQuery, criteriaBuilder);
-        criteriaQuery.where(predicate);
+
+        if (predicate != null) {
+            criteriaQuery.where(predicate);
+        }
 
         List<City> employees = entityManager.createQuery(criteriaQuery)
             .setFirstResult((int) pageable.getOffset())
@@ -40,8 +44,11 @@ public class CityCustomRepositoryImpl implements CityCustomRepository{
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> query = builder.createQuery(Long.class);
         Root<City> roots = query.from(City.class);
+        query = query.select(builder.count(roots));
         predicate = specification.toPredicate(roots, query, builder);
-        query.select(builder.count(roots)).where(predicate);
+        if (predicate != null) {
+            query.where(predicate);
+        }
         Long total = entityManager.createQuery(query).getSingleResult();
 
         return new PageImpl<>(employees, pageable, total);

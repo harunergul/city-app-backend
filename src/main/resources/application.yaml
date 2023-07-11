@@ -13,7 +13,7 @@ spring:
   jpa:
     generate-ddl: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     database: default
     show-sql: true
     database-platform: org.hibernate.dialect.H2Dialect
@@ -21,10 +21,11 @@ spring:
     url: jdbc:h2:./data/demo
     driverClassName: org.h2.Driver
 
-  # H2 Configuration
-# spring.datasource.url=jdbc:h2:mem:testdb
+    # H2 Configuration
+    # spring.datasource.url=jdbc:h2:mem:testdb
     username: sa
     password: password
+
 
 
 

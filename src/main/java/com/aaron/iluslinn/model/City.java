@@ -21,13 +21,12 @@ import jakarta.persistence.Table;
 public class City {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     public Long id;
 
     public String name;
 
-    @Column(length = 2048 )
+    @Column(length = 2048)
     public String photoUrl;
-
 
 }

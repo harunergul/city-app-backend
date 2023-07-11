@@ -8,7 +8,6 @@ import com.aaron.iluslinn.repository.RoleRepository;
 import com.aaron.iluslinn.repository.UserRepository;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 
 @Component
 @RequiredArgsConstructor
@@ -42,25 +42,24 @@ public class DBInitialDataRunner implements CommandLineRunner {
     private void addCitiesToDB() {
         long cityCount = cityRepository.count();
 
-        if(cityCount>0){
+        if (cityCount > 0) {
             return;
         }
         City[] data = ResourceUtil.getDataFromResourceFile("/data/city-mock-data.json", City[].class);
         List<City> cityList = new ArrayList<City>();
-        for (City city : data)
-        {
+        for (City city : data) {
             cityList.add(city);
         }
 
         cityRepository.saveAll(cityList);
-        log.info("Saved {} new cities to DB ", cityList.size() );
+        log.info("Saved {} new cities to DB ", cityList.size());
     }
 
-    private void createInitialUsers(){
+    private void createInitialUsers() {
 
         long existingUserCount = roleRepository.count();
 
-        if(existingUserCount>0){
+        if (existingUserCount > 0) {
             return;
         }
 
